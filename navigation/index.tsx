@@ -14,10 +14,13 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import HomeScreen from '../screens/HomeScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import LoginScreen from '../screens/LoginScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -38,11 +41,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false, orientation: 'landscape' }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      {/* <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false, orientation: 'landscape' }} /> */}
+      <Stack.Screen name="Root" component={LoadingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} options={{ orientation: 'landscape'}}/>
+        <Stack.Screen name="Modal" component={ModalScreen}/>
       </Stack.Group>
+      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
+      <Stack.Screen name="MainScreen" component={BottomTabNavigator}  options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -58,10 +64,18 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="HomeScreen"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
+      <BottomTab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          title: 'Tab UNO',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      /> 
       <BottomTab.Screen
         name="TabOne"
         component={TabOneScreen}
